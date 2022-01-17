@@ -15,8 +15,8 @@ run test.sh with "o" to see output of the program with each file<br>
 >./test.sh o
 <br>
 
-<h3>IF YOU WANT TO ADD MORE TEST CASES:</h3>
-1. add the input file to the	 'input' folder
+<h3>IF YOU WANT TO ADD MORE TEST CASES:</h3><br>
+1. add the input file to the	 'input' folder<br>
 2. add the correct result in the 'res'	 folder
 
 <br>
