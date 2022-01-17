@@ -1,3 +1,5 @@
+<h1> Shell script for testing Fillit project of the 42 schools </h1>
+
 USAGE:
 1. Change the "fillitpath" variable in test.sh
 2. Run test.sh
