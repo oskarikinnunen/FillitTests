@@ -19,6 +19,7 @@ rm -rf $diffsummary
 rm -rf $valgrindsummary
 rm -rf $mypath/diffs/*
 rm -rf $mypath/valgrind/*
+rm -rf $mypath/their_res/*
 printf "${NOCOLOR}"
 
 #DIFFS
@@ -79,9 +80,7 @@ valgrind --log-file="$mypath/valgrind/invalidfilename" $fillit invalidfilename &
 #With no file name arg
 valgrind --log-file="$mypath/valgrind/noargument" $fillit &> /dev/null
 
-rm -f $valgrindsummary
-echo "valgrind summary:
-" > $valgrindsummary
+echo -e "valgrind summary:\n" > $valgrindsummary
 printf "${RED}making valgrind summaries for files${NOCOLOR}\n"
 for filename in $mypath/valgrind/*; do
 	file=$(echo "$filename" | cut -d "/" -f 6)
