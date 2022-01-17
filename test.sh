@@ -10,51 +10,79 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NOCOLOR='\033[0m'
 
-
 #make re libft and fillit, empty diffs and valgrind folders
 printf "${RED}"
 make re -C $libftpath
 printf "${BLUE}"
 make re -C $fillitpath
+rm -rf $diffsummary
+rm -rf $valgrindsummary
 rm -rf $mypath/diffs/*
 rm -rf $mypath/valgrind/*
 printf "${NOCOLOR}"
 
 #DIFFS
 echo "FILLIT IS ASSUMED TO BE HERE = $fillit"
+touch $diffsummary
 for filename in $mypath/input/*; do
 	file=$(echo "$filename" | cut -d "/" -f 6)
 	echo "$file"
 	$fillit $filename > "$mypath/their_res/$file"
 	#$fillit $filename > "$mypath/res/$file" #For setting the correct answers
-	diff "$mypath/their_res/$file" "$mypath/res/$file" > "$mypath/diffs/$file"
+	diffvar=$(diff "$mypath/their_res/$file" "$mypath/res/$file")
+	echo -n "$diffvar" > "$mypath/diffs/$file"
+	if [[ "$diffvar" != "" ]]
+	then
+		echo -e "$file had diff:\nINPUT:\n" >> "$diffsummary"
+		cat "$filename" >> "$diffsummary"
+		echo -e "\nDIFF:\n" >> "$diffsummary"
+		echo "$diffvar" >> "$diffsummary"
+	fi
 done
-$fillit invalidfilename > "$mypath/their_res/invalidfilename"
-$fillit > "$mypath/their_res/noargument"
 
-printf "
-DIFFS FOLDER CONTENTS AFTER TESTS:
-${RED}"
-cd $mypath/diffs && ls -l
-printf "
-${BLUE}
-RUNNING WITH VALGRIND:${NOCOLOR}
-"
+echo -e "\nSPECIAL DIFFS:\n" >> "$diffsummary"
+#invalidfilename
+filename="invalidfilename"
+$fillit $filename > "$mypath/their_res/$filename"
+diffvar=$(diff "$mypath/their_res/$filename" "$mypath/res/$filename")
+diff "$mypath/their_res/$filename" "$mypath/res/$filename" > "$mypath/diffs/$filename"
+echo -n "$diffvar" > "$mypath/diffs/$filename"
+echo -en "invalidfilenamediff:\n$diffvar" >> "$diffsummary"
+#running without argument
+filename="noargument"
+$fillit > "$mypath/their_res/$filename"
+diffvar=$(diff "$mypath/their_res/$filename" "$mypath/res/$filename")
+diff "$mypath/their_res/$filename" "$mypath/res/$filename" > "$mypath/diffs/$filename"
+echo -n "$diffvar" > "$mypath/diffs/$filename"
+echo -en "without arg diff:\n$diffvar" >> "$diffsummary"
+
+
+printf "\nDIFFS FOLDER CONTENTS AFTER TESTS:\n${RED}"
+cd $mypath/diffs && stat -c "SIZE OF DIFF-FILE %s %n" *
+printf "\n${BLUE}RUNNING WITH VALGRIND:${NOCOLOR}\n"
+
 #VALGRIND
 for filename in $mypath/input/*; do
 	file=$(echo "$filename" | cut -d "/" -f 6)
 	echo "$file"
-	valgrind --log-file="$mypath/valgrind/$file" $fillit $filename
+	if ! [ "$#" -ne 1 ] && [ $1 == "o" ]
+	then
+		echo -e "${RED}OUTPUT:${BLUE}"
+		valgrind --log-file="$mypath/valgrind/$file" $fillit $filename
+		echo -e "${NOCOLOR}\n"
+	else
+		valgrind --log-file="$mypath/valgrind/$file" $fillit $filename &> /dev/null
+	fi
 done
 #With invalid file name arg
-valgrind --log-file="$mypath/valgrind/invalidfilename" $fillit invalidfilename
+valgrind --log-file="$mypath/valgrind/invalidfilename" $fillit invalidfilename &> /dev/null
 #With no file name arg
-valgrind --log-file="$mypath/valgrind/noargument" $fillit
+valgrind --log-file="$mypath/valgrind/noargument" $fillit &> /dev/null
 
 rm -f $valgrindsummary
 echo "valgrind summary:
 " > $valgrindsummary
-echo "making valgrind summaries for files"
+printf "${RED}making valgrind summaries for files${NOCOLOR}\n"
 for filename in $mypath/valgrind/*; do
 	file=$(echo "$filename" | cut -d "/" -f 6)
 	echo "$filename:" >> $valgrindsummary
@@ -63,4 +91,4 @@ for filename in $mypath/valgrind/*; do
 	" >> $valgrindsummary
 done
 
-echo "done!"
+echo -e "\nDONE!"

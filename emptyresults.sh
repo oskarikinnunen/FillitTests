@@ -5,6 +5,7 @@ rm -f their_res/*
 rm -f diffs/*
 rm -f valgrind/*
 rm -f results_valgrind
+rm -f results_diff
 
 # These are here so git doesn't ignore the folders
 touch their_res/ignore
