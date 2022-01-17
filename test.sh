@@ -4,6 +4,8 @@ fillitpath=~/fillit_ours #CHANGE THIS TO THE EVALUATEES PATH
 fillit=$fillitpath/fillit
 libftpath=$fillitpath/libft #CHANGE IF NEEDED
 mypath=$(pwd)
+valgrindsummary=$mypath/results_valgrind
+diffsummary=$mypath/results_diff
 RED='\033[0;31m'
 BLUE='\033[0;34m'
 NOCOLOR='\033[0m'
@@ -20,7 +22,7 @@ printf "${NOCOLOR}"
 
 #DIFFS
 echo "FILLIT IS ASSUMED TO BE HERE = $fillit"
-for filename in ~/fillit_tests/input/*; do
+for filename in $mypath/input/*; do
 	file=$(echo "$filename" | cut -d "/" -f 6)
 	echo "$file"
 	$fillit $filename > "$mypath/their_res/$file"
@@ -39,7 +41,7 @@ ${BLUE}
 RUNNING WITH VALGRIND:${NOCOLOR}
 "
 #VALGRIND
-for filename in ~/fillit_tests/input/*; do
+for filename in $mypath/input/*; do
 	file=$(echo "$filename" | cut -d "/" -f 6)
 	echo "$file"
 	valgrind --log-file="$mypath/valgrind/$file" $fillit $filename
@@ -48,3 +50,17 @@ done
 valgrind --log-file="$mypath/valgrind/invalidfilename" $fillit invalidfilename
 #With no file name arg
 valgrind --log-file="$mypath/valgrind/noargument" $fillit
+
+rm -f $valgrindsummary
+echo "valgrind summary:
+" > $valgrindsummary
+echo "making valgrind summaries for files"
+for filename in $mypath/valgrind/*; do
+	file=$(echo "$filename" | cut -d "/" -f 6)
+	echo "$filename:" >> $valgrindsummary
+	cat $filename | grep 'leaks\|leak\|free' >> $valgrindsummary
+	echo "
+	" >> $valgrindsummary
+done
+
+echo "done!"
