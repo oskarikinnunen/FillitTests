@@ -3,7 +3,8 @@ USAGE:
 2. Run test.sh
 3. Check diffs folder for discrepancies
 	<br>note: *"usage" message of fillit without parameters can/will vary since it's exact form is not specified in the PDF*
-4. Check valgrind folder for valgrind output with different cases
+4. Check results_valgrind for quick summary of valgrind output (grepped with leaks\|leak\|free)
+	<br>or check the full results for each file in valgrind/*filename*
 
 IF YOU WANT TO ADD MORE TEST CASES:
 1. add the input file to the	 'input' folder
