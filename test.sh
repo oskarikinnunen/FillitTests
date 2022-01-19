@@ -1,5 +1,5 @@
 #fillitpath=~/fillit_passed/ProjectFiles/ #For setting the correct answers, set this to a confirmed passed fillit project and comment out the next line
-fillitpath=~/fillit_ours #CHANGE THIS TO THE EVALUATEES PATH
+fillitpath=~/filee_repo #CHANGE THIS TO THE EVALUATEES PATH
 
 fillit=$fillitpath/fillit
 libftpath=$fillitpath/libft #CHANGE IF NEEDED
