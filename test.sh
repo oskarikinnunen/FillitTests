@@ -1,5 +1,5 @@
 #fillitpath=~/fillit_passed/ProjectFiles/ #For setting the correct answers, set this to a confirmed passed fillit project and comment out the next line
-fillitpath=~/filee_repo #CHANGE THIS TO THE EVALUATEES PATH
+fillitpath=~/fillit2 #CHANGE THIS TO THE EVALUATEES PATH
 
 fillit=$fillitpath/fillit
 libftpath=$fillitpath/libft #CHANGE IF NEEDED
@@ -26,11 +26,13 @@ printf "${NOCOLOR}"
 echo "FILLIT IS ASSUMED TO BE HERE = $fillit"
 touch $diffsummary
 for filename in $mypath/input/*; do
-	file=$(echo "$filename" | cut -d "/" -f 6)
-	echo "$file"
+	file=$(basename "$filename")
+	echo "FILE FOUND UNDER INPUT $file"
 	$fillit $filename > "$mypath/their_res/$file"
 	#$fillit $filename > "$mypath/res/$file" #For setting the correct answers
 	diffvar=$(diff "$mypath/their_res/$file" "$mypath/res/$file")
+	#echo "$(pwd)"
+	#echo "$mypath"
 	echo -n "$diffvar" > "$mypath/diffs/$file"
 	if [[ "$diffvar" != "" ]]
 	then
@@ -83,7 +85,7 @@ valgrind --log-file="$mypath/valgrind/noargument" $fillit &> /dev/null
 echo -e "valgrind summary:\n" > $valgrindsummary
 printf "${RED}making valgrind summaries for files${NOCOLOR}\n"
 for filename in $mypath/valgrind/*; do
-	file=$(echo "$filename" | cut -d "/" -f 6)
+	file=$(basename "$filename")
 	echo "$filename:" >> $valgrindsummary
 	cat $filename | grep 'leaks\|leak\|free' >> $valgrindsummary
 	echo "
