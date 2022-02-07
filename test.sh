@@ -1,4 +1,3 @@
-#FILLITPATH=~/fillit_passed/ProjectFiles/ #For setting the correct answers, set this to a confirmed passed fillit project and comment out the next line
 FILLITPATH=~/fillit_t #CHANGE THIS TO THE EVALUATEES PATH
 
 export FILLITPATH
