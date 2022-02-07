@@ -1,5 +1,5 @@
 #FILLITPATH=~/fillit_passed/ProjectFiles/ #For setting the correct answers, set this to a confirmed passed fillit project and comment out the next line
-FILLITPATH=~/FillitOurs #CHANGE THIS TO THE EVALUATEES PATH
+FILLITPATH=~/fillit_t #CHANGE THIS TO THE EVALUATEES PATH
 
 export FILLITPATH
 
@@ -102,4 +102,6 @@ done
 echo -e "\nDONE!\n"
 
 cd $mypath
-bash ./time.sh
+
+#UNCOMMENT the line below to run time tests
+#bash ./time.sh
